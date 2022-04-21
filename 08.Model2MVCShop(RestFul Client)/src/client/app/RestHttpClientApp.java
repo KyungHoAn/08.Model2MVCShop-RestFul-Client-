@@ -28,9 +28,9 @@ public class RestHttpClientApp {
 		// 주석을 하나씩 처리해가며 실습
 		////////////////////////////////////////////////////////////////////////////////////////////
 		
-//		System.out.println("\n====================================\n");
+		System.out.println("\n====================================\n");
 //		// 1.1 Http Get 방식 Request : JsonSimple lib 사용
-//		RestHttpClientApp.getUserTest_JsonSimple();
+		RestHttpClientApp.getUserTest_JsonSimple();
 		
 //		System.out.println("\n====================================\n");
 //		// 1.2 Http Get 방식 Request : CodeHaus lib 사용
@@ -46,7 +46,6 @@ public class RestHttpClientApp {
 	
 	}
 	
-	
 //================================================================//
 	//1.1 Http Protocol GET Request : JsonSimple 3rd party lib 사용
 	public static void getUserTest_JsonSimple() throws Exception{
@@ -54,7 +53,7 @@ public class RestHttpClientApp {
 		// HttpClient : Http Protocol 의 client 추상화 
 		HttpClient httpClient = new DefaultHttpClient();
 		
-		String url= 	"http://127.0.0.1:8080/user/json/getUser/admin";
+		String url= "http://127.0.0.1:8080/user/json/getUser/admin";
 				
 		// HttpGet : Http Protocol 의 GET 방식 Request
 		HttpGet httpGet = new HttpGet(url);
@@ -125,8 +124,7 @@ public class RestHttpClientApp {
 		 User user = objectMapper.readValue(jsonobj.toString(), User.class);
 		 System.out.println(user);
 	}
-//================================================================//	
-	
+//================================================================//
 //================================================================//
 	//2.1 Http Protocol POST Request : FromData 전달 / JsonSimple 3rd party lib 사용
 	public static void LoginTest_JsonSimple() throws Exception{
