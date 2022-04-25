@@ -43,8 +43,15 @@ public class RestHttpClientAppPro {
 //		System.out.println("\n=======================");
 //		RestHttpClientAppPro.listProductTest_Codehaus();
 		
+//		System.out.println("\n=======================");
+//		RestHttpClientAppPro.upateProductTest_JsonSimple();
+		
+//		System.out.println("\n=======================");
+//		RestHttpClientAppPro.updateProductTest_Codehaus();
+		
 		System.out.println("\n=======================");
-		RestHttpClientAppPro.upateProductTest_JsonSimple();
+		RestHttpClientAppPro.updateProductTestP_JsonSimple();
+		
 	}
 	public static void getProductTest_JsonSimple() throws Exception{
 		HttpClient httpClient = new DefaultHttpClient();
@@ -109,8 +116,8 @@ public class RestHttpClientAppPro {
 		httpPost.setHeader("Content-Type","application/json");
 		
 		JSONObject json = new JSONObject();
-		json.put("prodName","비타민");
-		json.put("prodDetail","비타5000");
+		json.put("prodName","ABV");
+		json.put("prodDetail","초코렛");
 		HttpEntity httpEntity = new StringEntity(json.toString(),"utf-8");
 		
 		httpPost.setEntity(httpEntity);
@@ -246,12 +253,11 @@ public class RestHttpClientAppPro {
 	public static void upateProductTest_JsonSimple() throws Exception{
 		HttpClient httpClient = new DefaultHttpClient();
 		
-		String url ="http://127.0.0.1:8080/product/json/updateProduct/10100";
+		String url ="http://127.0.0.1:8080/product/json/updateProduct/10020";
 		
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.setHeader("Accept","application/json");
-		httpGet.setHeader("Content-Type","application/json");
-		
+		httpGet.setHeader("Content-Type","application/json");		
 		HttpResponse httpResponse = httpClient.execute(httpGet);
 		
 		System.out.println(httpResponse);
@@ -263,6 +269,68 @@ public class RestHttpClientAppPro {
 		BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
 		
 		System.out.println("[Server 에서 받은 Data 확인");
+		String serverData = br.readLine();
+		System.out.println(serverData);
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(serverData);
+		System.out.println(jsonobj);
+	}
+	
+	public static void updateProductTest_Codehaus() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		String url ="http://127.0.0.1:8080/product/json/updateProduct/10020";
+		
+		HttpGet httpGet = new HttpGet(url);
+		httpGet.setHeader("Accept","application/json");
+		httpGet.setHeader("Content-Type","application/json");
+		HttpResponse httpResponse = httpClient.execute(httpGet);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity = httpResponse.getEntity();
+		
+		InputStream is = httpEntity.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"utf-8"));
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(br);
+		System.out.println(jsonobj);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		Product product = objectMapper.readValue(jsonobj.toString(), Product.class);
+		System.out.println(product);
+	}
+	
+	public static void updateProductTestP_JsonSimple() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		String url ="http://127.0.0.1:8080/product/json/updateProduct";
+		
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("Content-Type","application/json");
+		
+		JSONObject json = new JSONObject();
+		json.put("prodName","에너지드링크");
+		json.put("prodDetail","오렌지");
+//		json.put("manuDate","321");
+//		json.put("price", 4312);
+//		json.put("fileName", "321");
+		HttpEntity httpEntity01 = new StringEntity(json.toString(),"utf-8");
+		
+		httpPost.setEntity(httpEntity01);
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity = httpResponse.getEntity();
+		
+		InputStream is = httpEntity.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"utf-8"));
+		
+		System.out.println("[Server 에서 받은 Data 확인]");
 		String serverData = br.readLine();
 		System.out.println(serverData);
 		

@@ -28,9 +28,9 @@ public class RestHttpClientApp {
 		// 주석을 하나씩 처리해가며 실습
 		////////////////////////////////////////////////////////////////////////////////////////////
 		
-		System.out.println("\n====================================\n");
+//		System.out.println("\n====================================\n");
 //		// 1.1 Http Get 방식 Request : JsonSimple lib 사용
-		RestHttpClientApp.getUserTest_JsonSimple();
+//		RestHttpClientApp.getUserTest_JsonSimple();
 		
 //		System.out.println("\n====================================\n");
 //		// 1.2 Http Get 방식 Request : CodeHaus lib 사용
@@ -44,6 +44,8 @@ public class RestHttpClientApp {
 //		// 1.2 Http Post 방식 Request : CodeHaus lib 사용
 //		RestHttpClientApp.LoginTest_Codehaus();		
 	
+		System.out.println("\n===================================\n");
+		RestHttpClientApp.addUserTest_CodeHaus();
 	}
 	
 //================================================================//
@@ -232,6 +234,44 @@ public class RestHttpClientApp {
 		ObjectMapper objectMapper = new ObjectMapper();
 		 User user = objectMapper.readValue(jsonobj.toString(), User.class);
 		 System.out.println(user);
-	}	
+	}
+	public static void addUserTest_CodeHaus() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		String url = "http://127.0.0.1:8080/user/json/addUser";
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("Content-Type","application/json");
+		
+		User user = new User();
+		user.setUserId("testUser01");
+		user.setUserName("testUser01");
+		user.setPassword("987654321");
+		ObjectMapper objectMapper01 = new ObjectMapper();
+		
+		String jsonValue = objectMapper01.writeValueAsString(user);
+		System.out.println(jsonValue);
+		
+		HttpEntity httpEntity01 = new StringEntity(jsonValue,"utf-8");
+		
+		httpPost.setEntity(httpEntity01);
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity = httpResponse.getEntity();
+		
+		InputStream is = httpEntity.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(br);
+		System.out.println(jsonobj);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		User user01 = objectMapper.readValue(jsonobj.toString(), User.class);
+		System.out.println(user01);
+		
+	}
 	
 }
