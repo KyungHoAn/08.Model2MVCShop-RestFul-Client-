@@ -3,6 +3,7 @@ package client.app;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -44,8 +45,23 @@ public class RestHttpClientApp {
 //		// 1.2 Http Post 방식 Request : CodeHaus lib 사용
 //		RestHttpClientApp.LoginTest_Codehaus();		
 	
+//		System.out.println("\n===================================\n");
+//		RestHttpClientApp.addUserTest_JsonSimple();
+		
+//		System.out.println("\n===================================\n");
+//		RestHttpClientApp.addUserTest_CodeHaus();
+	
+//		System.out.println("\n===================================\n");
+//		RestHttpClientApp.updateUserTest_JsonSimple();
+		
+//		System.out.println("\n===================================\n");
+//		RestHttpClientApp.updateUserTest_CodeHaus();
+		
+//		System.out.println("\n===================================\n");
+//		RestHttpClientApp.listUserTest_JsonSimple();
+		
 		System.out.println("\n===================================\n");
-		RestHttpClientApp.addUserTest_CodeHaus();
+		RestHttpClientApp.listUserTest_Codehaus();
 	}
 	
 //================================================================//
@@ -235,6 +251,39 @@ public class RestHttpClientApp {
 		 User user = objectMapper.readValue(jsonobj.toString(), User.class);
 		 System.out.println(user);
 	}
+	public static void addUserTest_JsonSimple() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		String url = "http://127.0.0.1:8080/user/json/addUser";
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("Content-Type","application/json");
+		
+		JSONObject json = new JSONObject();
+		json.put("userId", "testUser02");
+		json.put("userName", "testUser02");
+		json.put("password", "9999999");
+		HttpEntity httpEntity = new StringEntity(json.toString(),"utf-8");
+		
+		httpPost.setEntity(httpEntity);
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity01  = httpResponse.getEntity();
+		
+		InputStream is = httpEntity01.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"utf-8"));
+		
+		System.out.println("[Server 에서 받은 Data확인");
+		String serverData = br.readLine();
+		System.out.println(serverData);
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(serverData);
+		System.out.println(jsonobj);
+	}
+	
 	public static void addUserTest_CodeHaus() throws Exception{
 		HttpClient httpClient = new DefaultHttpClient();
 		
@@ -271,7 +320,146 @@ public class RestHttpClientApp {
 		ObjectMapper objectMapper = new ObjectMapper();
 		User user01 = objectMapper.readValue(jsonobj.toString(), User.class);
 		System.out.println(user01);
+	}
+	
+	public static void updateUserTest_JsonSimple() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
 		
+		String url = "http://127.0.0.1:8080/user/json/updateUser";
+		
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("Content-Type","application/json");
+		
+		JSONObject json = new JSONObject();
+		json.put("userId","testUser02");
+		json.put("userName", "testUser02");
+		json.put("password","1432142134");
+		HttpEntity httpEntity01 = new StringEntity(json.toString(),"utf-8");
+		
+		httpPost.setEntity(httpEntity01);
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity = httpResponse.getEntity();
+		
+		InputStream is = httpEntity.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"utf-8"));
+		
+		System.out.println("[Server에서 받은 Data확인");
+		String serverData = br.readLine();
+		System.out.println(serverData);
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(serverData);
+		System.out.println(jsonobj);
+	}
+	public static void updateUserTest_CodeHaus() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		String url = "http://127.0.0.1:8080/user/json/updateUser";
+		
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("Content-Type","application/json");
+		
+		User user = new User();
+		user.setUserId("testUser02");
+		user.setUserName("testUser03");
+		ObjectMapper objectMapper01 = new ObjectMapper();
+		
+		String jsonValue = objectMapper01.writeValueAsString(user);
+		
+		System.out.println(jsonValue);
+		
+		HttpEntity httpEntity01 = new StringEntity(jsonValue,"utf-8");
+		
+		httpPost.setEntity(httpEntity01);
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity = httpResponse.getEntity();
+		
+		InputStream is = httpEntity.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"utf-8"));
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(br);
+		System.out.println(jsonobj);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		User user1 = objectMapper.readValue(jsonobj.toString(), User.class);
+		System.out.println(user1);
+	}
+	
+	public static void listUserTest_JsonSimple() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		String url = "http://127.0.0.1:8080/user/json/listUser";
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("content-Type","application/json");
+		
+		User user = new User();
+		ObjectMapper objectMapper01 = new ObjectMapper();
+		
+		String jsonValue = objectMapper01.writeValueAsString(user);
+		
+		System.out.println(jsonValue);
+		
+		HttpEntity httpEntity01 = new StringEntity(jsonValue,"utf-8");
+		
+		httpPost.setEntity(httpEntity01);
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity = httpResponse.getEntity();
+		
+		InputStream is = httpEntity.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"utf-8"));
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(br);
+		System.out.println(jsonobj);
+	}
+	
+	public static void listUserTest_Codehaus() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		String url = "http://127.0.0.1:8080/user/json/listUser";
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("Content-Type","application/json");
+		
+		User user = new User();
+		ObjectMapper objectMapper01 = new ObjectMapper();
+		
+		String jsonValue = objectMapper01.writeValueAsString(user);
+		
+		System.out.println(jsonValue);
+		
+		HttpEntity httpEntity01 = new StringEntity(jsonValue,"utf-8");
+		
+		httpPost.setEntity(httpEntity01);
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity = httpResponse.getEntity();
+		
+		InputStream is = httpEntity.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"utf-8"));
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(br);
+		System.out.println(jsonobj);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map user1 = objectMapper.readValue(jsonobj.toString(), Map.class);
+		System.out.println(user1);
 	}
 	
 }

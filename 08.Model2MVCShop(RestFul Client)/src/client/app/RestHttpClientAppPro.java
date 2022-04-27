@@ -40,8 +40,8 @@ public class RestHttpClientAppPro {
 //		System.out.println("\n=======================");
 //		RestHttpClientAppPro.listProductTest_JsonSimple();
 		
-//		System.out.println("\n=======================");
-//		RestHttpClientAppPro.listProductTest_Codehaus();
+		System.out.println("\n=======================");
+		RestHttpClientAppPro.listProductTest_Codehaus();
 		
 //		System.out.println("\n=======================");
 //		RestHttpClientAppPro.upateProductTest_JsonSimple();
@@ -49,9 +49,11 @@ public class RestHttpClientAppPro {
 //		System.out.println("\n=======================");
 //		RestHttpClientAppPro.updateProductTest_Codehaus();
 		
-		System.out.println("\n=======================");
-		RestHttpClientAppPro.updateProductTestP_JsonSimple();
+//		System.out.println("\n=======================");
+//		RestHttpClientAppPro.updateProductTestP_JsonSimple();
 		
+//		System.out.println("\n=======================");
+//		RestHttpClientAppPro.updateProductTestP_CodeHaus();
 	}
 	public static void getProductTest_JsonSimple() throws Exception{
 		HttpClient httpClient = new DefaultHttpClient();
@@ -336,5 +338,44 @@ public class RestHttpClientAppPro {
 		
 		JSONObject jsonobj = (JSONObject)JSONValue.parse(serverData);
 		System.out.println(jsonobj);
+	}
+	public static void updateProductTestP_CodeHaus() throws Exception{
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		String url = "http://127.0.0.1:8080/product/json/updateProduct";
+		
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Accept","application/json");
+		httpPost.setHeader("Content-Type","application/json");
+		
+		Product product = new Product();
+		product.setProdNo(10040);
+		product.setProdName("ø¨æÓ√ π‰");
+		product.setProdDetail("∏¿¿÷¥¬ √ π‰");
+		ObjectMapper objectMapper01 = new ObjectMapper();
+		
+		String jsonValue = objectMapper01.writeValueAsString(product);
+		
+		System.out.println(jsonValue);
+		
+		HttpEntity httpEntity01 = new StringEntity(jsonValue,"utf-8");
+		
+		httpPost.setEntity(httpEntity01);
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+		
+		System.out.println(httpResponse);
+		System.out.println();
+		
+		HttpEntity httpEntity = httpResponse.getEntity();
+		
+		InputStream is = httpEntity.getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+		
+		JSONObject jsonobj = (JSONObject)JSONValue.parse(br);
+		System.out.println(jsonobj);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		Product pro = objectMapper.readValue(jsonobj.toString(), Product.class);
+		System.out.println(pro);
 	}
 }
