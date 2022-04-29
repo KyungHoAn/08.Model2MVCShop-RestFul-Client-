@@ -40,11 +40,11 @@ public class RestHttpClientAppPro {
 //		System.out.println("\n=======================");
 //		RestHttpClientAppPro.listProductTest_JsonSimple();
 		
-		System.out.println("\n=======================");
-		RestHttpClientAppPro.listProductTest_Codehaus();
-		
 //		System.out.println("\n=======================");
-//		RestHttpClientAppPro.upateProductTest_JsonSimple();
+//		RestHttpClientAppPro.listProductTest_Codehaus();
+		
+		System.out.println("\n=======================");
+		RestHttpClientAppPro.upateProductTest_JsonSimple();
 		
 //		System.out.println("\n=======================");
 //		RestHttpClientAppPro.updateProductTest_Codehaus();
@@ -255,7 +255,7 @@ public class RestHttpClientAppPro {
 	public static void upateProductTest_JsonSimple() throws Exception{
 		HttpClient httpClient = new DefaultHttpClient();
 		
-		String url ="http://127.0.0.1:8080/product/json/updateProduct/10020";
+		String url ="http://127.0.0.1:8080/product/json/updateProductView/10020";
 		
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.setHeader("Accept","application/json");
@@ -281,7 +281,7 @@ public class RestHttpClientAppPro {
 	public static void updateProductTest_Codehaus() throws Exception{
 		HttpClient httpClient = new DefaultHttpClient();
 		
-		String url ="http://127.0.0.1:8080/product/json/updateProduct/10020";
+		String url ="http://127.0.0.1:8080/product/json/updateProductView/10020";
 		
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.setHeader("Accept","application/json");
